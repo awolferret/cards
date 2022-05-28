@@ -13,7 +13,7 @@ namespace ConsoleApp1
     }
     class Player
     {
-        public List<Card> hand = new List<Card>();
+        private List<Card> hand = new List<Card>();
         Deck deck = new Deck();
         private bool _isPlaying = true;
         string input;
