@@ -16,22 +16,21 @@ namespace ConsoleApp1
         private List<Card> hand = new List<Card>();
         Deck deck = new Deck();
         private bool _isPlaying = true;
-        string input;
         public void Playing()
         {
             deck.BuildDeck();
 
             while (_isPlaying)
             {
-                Console.WriteLine("1. Брать карты");
+                Console.WriteLine("\n1. Брать карты");
                 Console.WriteLine("2. Посмотреть карты в руке");
                 Console.WriteLine("3. Выход");
-                input = Console.ReadLine();
+                string input = Console.ReadLine();
 
                 switch (input)
                 {
                     case "1":
-                        DrawCard(deck._deck);
+                        DrawCard();
                         break;
                     case "2":
                         ShowHand();
@@ -43,9 +42,9 @@ namespace ConsoleApp1
             }
         }
 
-        public void DrawCard(List<Card> _deck)
+        public void DrawCard()
         {
-            if (_deck.Count > 0)
+            if (deck._deck.Count > 0)
             {
                 Console.WriteLine("Как много вы хотите взять?");
                 string input = Console.ReadLine();
@@ -53,13 +52,13 @@ namespace ConsoleApp1
                 Random random = new Random();
                 int selectedNumber;
 
-                if (ChekInput(input, out wantToDraw) && wantToDraw <= _deck.Count)
+                if (int.TryParse(input, out wantToDraw) && wantToDraw <= deck._deck.Count)
                 {
                     for (int i = 0; i < wantToDraw; i++)
                     {
-                        selectedNumber = random.Next(1, _deck.Count);
-                        hand.Add(_deck[selectedNumber-1]);
-                        _deck.RemoveAt(selectedNumber-1);
+                        selectedNumber = random.Next(1, deck._deck.Count);
+                        hand.Add(deck._deck[selectedNumber-1]);
+                        deck._deck.RemoveAt(selectedNumber-1);
                     }
                 }
                 else
@@ -95,13 +94,6 @@ namespace ConsoleApp1
             }
         }
 
-        private bool ChekInput(string input, out int number)
-        {
-            bool isCorrect;
-            isCorrect = int.TryParse(input, out number);
-            return isCorrect;
-        }
-
         public void Exit()
         {
             _isPlaying = false;
@@ -111,15 +103,15 @@ namespace ConsoleApp1
     class Deck
     {
         public List<Card> _deck = new List<Card>();
-        int cardValueNumber = 9;
-        int cardSuitNumber = 4;
+        private int cardValueNumber = 9;
+        private int cardSuitNumber = 4;
         public void BuildDeck()
         {
             for (int i = 0; i < cardSuitNumber; i++)
             {
                 for (int j = 0; j < cardValueNumber; j++)
                 {
-                    _deck.Add(new Card((Card.cardValue)j,(Card.cardSuit)i));
+                    _deck.Add(new Card((Card.CardValue)j,(Card.CardSuit)i));
                 }
             }
         }
@@ -127,10 +119,10 @@ namespace ConsoleApp1
 
     class Card
     {
-        private cardSuit _cardSuit;
-        private cardValue _cardValue;
+        private CardSuit _cardSuit;
+        private CardValue _cardValue;
 
-        public Card(cardValue cardValue,cardSuit cardSuit)
+        public Card(CardValue cardValue,CardSuit cardSuit)
         {
             _cardSuit = cardSuit;
             _cardValue = cardValue;
@@ -141,7 +133,7 @@ namespace ConsoleApp1
             Console.WriteLine($"{_cardSuit} {_cardValue}");
         }
 
-        public enum cardValue
+        public enum CardValue
         {
             Шесть,
             Семь,
@@ -154,7 +146,7 @@ namespace ConsoleApp1
             Туз
         }
 
-        public enum cardSuit
+        public enum CardSuit
         { 
             Червы,
             Пики,
